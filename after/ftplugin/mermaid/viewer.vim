@@ -66,7 +66,7 @@ function s:MakeUpHtml(theme, content)
     let html = s:ReadFile('/bone.html', '')
     let html = substitute(html, '{{style-path}}', style_path, '')
     let html = substitute(html, '{{mermaid-path}}', mermaid_path, '')
-    let html = substitute(html, '{{content}}', escape(a:content, '&\'), '')
+    let html = substitute(html, '{{content}}', a:content, '')
     let lines = split(html, '\n')
 
     return lines
@@ -75,9 +75,10 @@ endfunction
 
 "@return {Array<String>}
 function! s:Convert2Html()
-    let content = getline(1, '$')
-    let lines = s:MakeUpHtml(g:mmdv_theme, content)
-    return lines
+    let lines = getline(1, '$')
+    let content = join(lines, '\n')
+    let htmlLines = s:MakeUpHtml(g:mmdv_theme, content)
+    return htmlLines
 endfunction
 
 "
