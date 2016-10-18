@@ -31,7 +31,7 @@ function! s:OpenFile(filePath)
     elseif has('win32') || has('win64') || has('win95') || has('win16')
         let cmdStr = 'cmd /c start "" ' . path
     else
-        echomsg "Can NOT open " . a:filePath
+        echomsg 'Can NOT open ' . a:filePath
         return
     endif
 
@@ -54,9 +54,9 @@ endfunction
 "@return {Array<String>}
 function s:MakeUpHtml(theme, content)
     let cssFileMiddle = ''
-    if a:theme == 'dark'
+    if a:theme ==? 'dark'
         let cssFileMiddle = '.dark'
-    elseif a:theme == 'forest'
+    elseif a:theme ==? 'forest'
         let cssFileMiddle = '.forest'
     endif
 
@@ -116,8 +116,11 @@ endfunction
 
 command -nargs=0 MmdView call s:ViewMermaid()
 
-autocmd QuitPre,BufDelete,BufUnload,BufHidden,BufWinLeave     *.mmd   call s:RemoveTempHtml()
-autocmd BufWritePre *.mmd   call s:AutoRenderWhenSave()
+augroup mermaidviewer
+    autocmd!
+    autocmd QuitPre,BufDelete,BufUnload,BufHidden,BufWinLeave     *.mmd   call s:RemoveTempHtml()
+    autocmd BufWritePre *.mmd   call s:AutoRenderWhenSave()
+augroup END
 
 
 let &cpo = s:save_cpo
